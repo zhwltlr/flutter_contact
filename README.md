@@ -42,8 +42,9 @@ export PATH="$PATH:`pwd`/flutter/bin"
 ```
 
 모두 설치가 되면 `flutter doctor`로 잘 설치되었는지 확인
-<img src="https://ibb.co/vzQczCH" width="500px" />
-
+<div align="center">
+<img src ="https://github.com/zhwltlr/flutter_contact/assets/100506719/ac34c921-0789-431c-927d-c23c8e8a6bd4" width="600" align="center">
+</div>
 
 ### Unable to determine Android Studio version Error
 - [스텍오버플로우에서 찾은 해결](https://stackoverflow.com/questions/77271274/flutter-doctor-unable-to-determine-android-studio-version)
