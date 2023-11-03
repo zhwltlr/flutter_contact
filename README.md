@@ -49,7 +49,7 @@ export PATH="$PATH:`pwd`/flutter/bin"
 ### Unable to determine Android Studio version Error
 - [스텍오버플로우에서 찾은 해결](https://stackoverflow.com/questions/77271274/flutter-doctor-unable-to-determine-android-studio-version)
 
-## Widget 설정
+## 3. Widget 설정
 글자 넣기
 ```bash
 MaterialApp(
@@ -97,3 +97,63 @@ MaterialApp(
   )
 )
 ```
+
+## 4. Scaffold(), Row()/Column()
+
+Scaffold()
+  - 상단 / 중단 / 하단을 쉽게 나누어 주는 역할
+  ```bash
+  MaterialApp(
+    home: Scaffold(
+      appBar: top widget,
+      body: middle widget,
+      bottomNavigationBar: bottom widget,
+    )
+  ); 
+  ```
+Row()/Column()
+  - 가로와 세로의 배치 (css의 flex와 유사한 역할을 함)
+  - 간격 조절을 하고 싶다면, `mainAxisAlignment: MainAxisAlignment.블라블라,`, `crossAxisAlignment: CrossAxisAlignment.블라블라`설정해준다.
+  - mainAxis는 중심이 되는 축으로 Row()는 가로축, Column()은 세로축이 된다.
+  - 이의 반대가 되는 축으로 정렬을 하면 Row()는 세로축, Column()은 가로축이 된다.
+  - .spaceEvenly, .spaceBetween, .spaceAround, .start, .end, .center
+
+  ```bash
+  MaterialApp(
+    home: Scaffold(
+      body: Row( // or Column 
+        children: [ Icon(Icons.star), Icon(Icons.star), Icon(Icons.star) ] 
+      ), 
+    )
+  ); 
+  ```
+
+## 5. Container(), SizedBox()의 파라미터, Align()
+Container() vs SizedBox() : width, height 파라미터만 필요하면 Container() 대신 SizedBox()을 써주어 가볍게 사용한다.
+
+Container() margin, padding
+  - Row(), Column()에는 여백을 줄 수 없기 때문에 꼭 Container()을 써서 여백을 주어야 한다.
+  ```bash
+  margin: EdgeInsets.all(30), 
+  padding: EdgeInsets.fromLTRB(10, 20, 30, 40), // 자주 쓰이니까 외우는 건 어떨까?
+  ```
+
+Container() decoration
+  - color, shape, boxShadow, gradient, image, borderRadius 등 여러가지 스타일을 추가 하고 싶으면 decoration()을 써준다.
+  ```bash
+  Container(
+    decoration : BoxDecoration(
+      border : Border.all(color : Colors.black)
+    )
+  ) 
+  ```
+  
+Align()
+  - Center() 정렬처럼 특정 위치의 정렬을 하고 싶다면 Align()을 써준다.
+  ```bash
+  Align(
+    alignment : Alignment.bottomLeft,
+    child : Container( width : 50, height : 50, color : Colors.blue )
+  )
+  ```
+  - 만약 박스의 폭을 full로 하고 싶다면 `Container( width : double.infinity, height : 50 )`
