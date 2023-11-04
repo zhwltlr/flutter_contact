@@ -13,8 +13,39 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
-        appBar: AppBar( title: Text('앱임'), actions: [Icon(Icons.star),Icon(Icons.star)],),
-        body: SizedBox(),
+        appBar: AppBar( leading: Icon(Icons.list),title: Text('금호동 3가'), actions: [Icon(Icons.search),Icon(Icons.list),Icon(Icons.notifications)],),
+        body: Container(
+          height: 150,
+          padding: EdgeInsets.all(20),
+          child: Row(
+            children: [
+              Image.asset('assets/profile.png', width: 150,),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text('123', style: TextStyle(),),
+                    Text('1234'),
+                    Text('skjdhfjksfh'),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        Icon(Icons.favorite),
+                        Text('4')
+                      ],
+                    )
+                  ],
+                ),
+              ),
+            ],
+          ),
+          // child: Row(
+          //   children: [
+          //     Expanded(child: Container(color: Colors.blue,),),
+          //     Container(width: 100, color: Colors.green,)
+          //   ],
+          // ),
+        ),
         bottomNavigationBar: BottomAppBar(
           child: SizedBox(
             height: 100,
