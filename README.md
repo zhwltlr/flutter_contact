@@ -157,3 +157,62 @@ Align()
   )
   ```
   - 만약 박스의 폭을 full로 하고 싶다면 `Container( width : double.infinity, height : 50 )`
+
+
+## 6. Typography & Layout
+Text() 안에 style 파라미터로 텍스트의 스타일을 설정한다.
+```bash
+Text( '글자임', 
+  style : TextStyle( color : Colors.red )  // backgroundColor, fontSize, fontWeight, fontFamily, letterSpacing
+)
+```
+
+색 스타일 지정
+```bash
+color : Colors.red, 
+color : Color.fromRGBO(20,130,50,0.8), 
+color : Color(0xffffffff),
+```
+
+Button은 3가지 종류로 나뉜다. `onPressed(){}`로 클릭 핸들링이 가능하다.
+```bash
+TextButton( child: Text('버튼임'), onPressed: (){} )
+ElevatedButton( child: Text('버튼임'), onPressed: (){} )
+IconButton( icon: Icon(), onPressed: (){} )
+```
+
+AppBar() 스타일 적용하기
+```bash
+AppBar(
+  title : Text('앱제목'),
+  leading : Icon(Icons.star),
+  actions : [ Icon(Icons.star), Icon(Icons.star) ]
+)
+```
+
+## 7. Expanded & Flexible
+
+Flexible() : width를 %로 나타내고 싶을때 사용한다.
+```bash
+Row(
+  children : [
+    Flexible( child: Container(color : Colors.blue), flex : 1 ),
+    Flexible( child: Container(Color : Colors.green), flex : 2 )
+  ]
+)
+```
+  - Row() 안의 Container()를 Flexible()로 감싼다.
+  - flex는 이 박스가 얼마나 가로폭을 차지할지 결정하는 "배수"
+  - 1과 2를 써놓으면 1대 2만큼 차지하는 것
+
+Expanded() : 하나의 박스만 가로폭을 채우고 싶을 때 사용
+```bash
+Row(
+  children : [
+    Expanded( child: Container(color : Colors.blue), flex : 1 ),
+    Container(Color : Colors.green, width : 100),
+  ]
+)
+```
+  - Expanded()가 적용된 박스는 Container() 100만큼의 너비를 제외하고 꽉 채우게 된다.
+

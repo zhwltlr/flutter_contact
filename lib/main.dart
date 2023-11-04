@@ -13,7 +13,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
-        appBar: AppBar( leading: Icon(Icons.list),title: Text('금호동 3가'), actions: [Icon(Icons.search),Icon(Icons.list),Icon(Icons.notifications)],),
+        appBar: AppBar( leading: Icon(Icons.list),title: Text('marketplace'), actions: [Icon(Icons.search),Icon(Icons.list),Icon(Icons.notifications)],),
         body: Container(
           height: 150,
           padding: EdgeInsets.all(20),
@@ -24,8 +24,8 @@ class MyApp extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text('123', style: TextStyle(),),
-                    Text('1234'),
+                    Text('123', style: TextStyle(fontWeight: FontWeight.w700 ),),
+                    Text('1234', style: TextStyle(fontWeight: FontWeight.w500),),
                     Text('skjdhfjksfh'),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.end,
