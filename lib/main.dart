@@ -39,12 +39,6 @@ class MyApp extends StatelessWidget {
               ),
             ],
           ),
-          // child: Row(
-          //   children: [
-          //     Expanded(child: Container(color: Colors.blue,),),
-          //     Container(width: 100, color: Colors.green,)
-          //   ],
-          // ),
         ),
         bottomNavigationBar: BottomAppBar(
           child: SizedBox(
