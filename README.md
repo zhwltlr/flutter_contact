@@ -216,3 +216,64 @@ Row(
 ```
   - Expanded()가 적용된 박스는 Container() 100만큼의 너비를 제외하고 꽉 채우게 된다.
 
+## 8. Custom Widget & ListView
+Custom Widget
+- 커스텀 위젯은 class로 만든다. (`stless`로 생성가능)
+- extends는 미리 만들어진 class 복사하는 것
+- StatelessWidget : 완성품
+- override : 다른 class 안에도 build(){} 가 존재하기 때문에 다른 class의 build보다 우선적으로 적용하기 위해 작성한다.
+  ```bash
+  class CustomWidget extends StatelessWidget {
+    const CustomWidget({Key? key}) : super(key: key);
+    @override
+    Widget build(BuildContext context) {
+      return Container()
+    }
+  } 
+  ```
+
+ListView
+- Container()를 여러개 써도 스크롤이 만들어지지 않는다.
+- ListView()는 스크롤을 생성해준다.
+- 스크롤이 닿지 않는 곳에서는 메모리를 삭제해주기 때문에 성능을 개선할 수 있다.
+- 
+```bash
+ListView(
+  children: [
+    Text('안녕'),
+    Text('안녕'),
+    Text('안녕'),
+  ],
+) 
+```
+
+## 9. ListTile
+왼쪽에 이미지가 있고 오른쪽에 텍스트가 있는 레이아웃 필요할 때 사용하는 것이 좋다.
+```bash
+ListTile(
+  leading : Image.asset('assets/profile.png'),
+  title : Text('홍길동')
+)
+```
+
+동적으로 만들 경우에는 ListView.builder()를 사용한다.
+```bash
+ListView.builder(
+  itemCount: 20,
+  itemBuilder: (context, i) {
+    return Text('안녕');
+  }
+);  
+```
+- itemCount: 리스트갯수
+- itemBuilder: (){ return 반복할위젯 }
+
+FloatingActionButton
+- 버튼을 만들때는 child & onPressed(){}를 써야한다.
+- 출력되는 값을 확인하기 위해서는 print()를 사용한다.
+```bash
+floatingActionButton: FloatingActionButton(
+  child: Text('버튼'),
+  onPressed: (){ a++; print(a); },
+),
+```
