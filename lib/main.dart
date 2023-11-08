@@ -5,28 +5,48 @@ void main() {
   runApp(MyApp());
 }
 
+
+
 // 상단바, 하단바 처럼 바뀌지 않는 값들을 상수로 저장하여 사용
 // const a = SizedBox(
 //   child: Text('안녕'),
 // )
 
 // 메인 페이지 만드는 곳 - 이하 4줄은 기본적으로 들어가는 것
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   MyApp({super.key});
+
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
   var cnt = 1;
+  var name = ['김영숙','홍길동','피자집'];
+  var like = [0,0,0];
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
-        appBar: AppBar(),
+        appBar: AppBar(
+          title: Text('연락처앱'),
+        ),
         body: ListView.builder(
           itemCount: 3,
           itemBuilder: ( context , i ){
             print(i);
             return ListTile(
-              leading: Image.asset('profile.png'),
-              title: Text('홍길동'),
+              leading: Text(like[i].toString()),
+              title: Text(name[i]),
+              trailing: ElevatedButton(
+                child: Text('좋아요'),
+                onPressed: (){
+                  setState(() {
+                    like[i]++;
+                  });
+                },
+              )
             );
           },
         ),
@@ -34,14 +54,15 @@ class MyApp extends StatelessWidget {
         floatingActionButton: FloatingActionButton(
           child: Text(cnt.toString()),
           onPressed: (){
-            print(cnt);
-            cnt ++;
+            setState(() {
+              cnt++;
+            });
           },
         ),
       ),
     );
    }
-  }
+}
 
 // 왜 class?
 // 커스텀 위젯은 class로 만든다.
