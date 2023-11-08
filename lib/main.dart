@@ -2,10 +2,11 @@ import 'package:flutter/material.dart';
 
 // app 실행 부분 메인페이지 넣기
 void main() {
-  runApp(MyApp());
+  runApp(MaterialApp(
+      home: MyApp()
+    )
+  );
 }
-
-
 
 // 상단바, 하단바 처럼 바뀌지 않는 값들을 상수로 저장하여 사용
 // const a = SizedBox(
@@ -27,8 +28,8 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
+    // context 는 부모요소가 누군지 알려줌(족보같은 개념!!)
+    return Scaffold(
         appBar: AppBar(
           title: Text('연락처앱'),
         ),
@@ -37,30 +38,36 @@ class _MyAppState extends State<MyApp> {
           itemBuilder: ( context , i ){
             print(i);
             return ListTile(
-              leading: Text(like[i].toString()),
+              leading: Image.asset('profile.png'),
               title: Text(name[i]),
-              trailing: ElevatedButton(
-                child: Text('좋아요'),
-                onPressed: (){
-                  setState(() {
-                    like[i]++;
-                  });
-                },
-              )
             );
           },
         ),
         bottomNavigationBar: BottomAppBar(),
+        // 전구로 wrap with builder 만들면, context를 생성해준다
         floatingActionButton: FloatingActionButton(
           child: Text(cnt.toString()),
           onPressed: (){
-            setState(() {
-              cnt++;
+            print(context.findAncestorWidgetOfExactType<MaterialApp>());
+            showDialog(context: context, builder: (context){
+              return Dialog(
+                child: Column(
+                  children: [
+                    Text('Contact'),
+                    // InputChip(label: label),
+                    Row(
+                      children: [
+                        Text('Cancle'),
+                        Text('OK')
+                      ],
+                    )
+                  ],
+                ),
+              );
             });
           },
         ),
-      ),
-    );
+      );
    }
 }
 
