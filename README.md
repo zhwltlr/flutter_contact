@@ -277,3 +277,101 @@ floatingActionButton: FloatingActionButton(
   onPressed: (){ a++; print(a); },
 ),
 ```
+
+## 10. stateful widget
+widget은 재렌더링을 해야만 변경사항이 보인다.
+이를 위해 state, setState를 이용해야 한다.
+```bash
+// StatefulWidget
+class 테스트 extends StatefulWidget {
+  const 테스트({Key? key}) : super(key: key);
+  @override
+  _테스트State createState() => _테스트State();
+}
+
+class _테스트State extends State {
+
+  var a = 1;  //여기 만드는 변수는 state
+  @override
+  Widget build(BuildContext context) {
+    return Container();
+  }
+}  
+```
+- class 안에 변수를 할당하면 state가 된다.
+- state를 변경하기 위해서는 setState 함수를 이용하여 변경한다.
+```bash
+  MaterialApp(
+  home: Scaffold(
+    floatingActionButtion: FloatingActionButton(
+      child : Text(a.toString()),
+      onPressed: (){ 
+        setState((){
+          a++
+        });
+      }
+    ),
+    appBar: AppBar(),
+    body: ~~~
+  ),
+)
+```
+#### 1. 데이터 변동사항이 잦을 것 같은 커스텀위젯은 전부 StatefulWidget (stful) 으로 생성
+#### 2. StatefulWidget 안에서 만든 변수는 state, state 바꾸면 해당 위젯도 자동 재렌더링
+#### 3. state 변경하고 싶으면 setState((){ }) 
+### 이를 통해 map함수처럼 반복문을 돌리면서 데이터 바인딩을 할 수도 있다.
+```bash
+ListView.builder(
+  itemCount: 3,
+  itemBuilder: (context, i) {
+    return ListTile(
+      leading : Image.asset('profile.png'),
+      title : Text(name[i]),
+    )
+  }
+);  
+```
+
+## 11. Dialog & context
+showDialog()
+```bash
+showDialog(
+  context: context, 
+  builder: (context){
+   return Dialog(
+     child: Text('AlertDialog Title'),
+   );
+ },
+);
+```
+- builder는 위젯을 return 해주는 것을 써주면 된다. 
+- context 는 조상 요소가 누군지 알려준다.(족보같은 개념!!)
+- 조상에 대한 정보를 담고 있는 역할이다. 
+- `print(context.findAncestorWidgetOfExactType<MaterialApp>());`이런식으로 확인해보면 MaterialApp이 부모요소라는 것을 알 수 있다.
+- Material App이 조상요소로 있어야 Dialog()가 정상적으로 작동한다.
+- 이를 위해서 다음과 같이 변경해준다.
+  ```bash
+  void main() {
+    runApp(MaterialApp(
+        home: MyApp()
+      )
+    );
+  } 
+  ```
+
+- 혹은 전구 버튼을 눌러서 wrap with builder를 선택해주면 다음과 같이 변경된다.
+```bash
+  return MaterialApp(
+    home: Scaffold(
+      floatingActionButton: Builder(
+        builder: (jokbo1) {
+          return FloatingActionButton(
+            onPressed: (){
+              showDialog( context: jokbo1,
+                builder: (context){ return Dialog( child: Text('AlertDialog Title'), ); },
+              );
+            },
+          );
+        }
+      ),  
+```
