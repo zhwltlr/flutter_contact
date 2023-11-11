@@ -360,6 +360,7 @@ showDialog(
   ```
 
 - 혹은 전구 버튼을 눌러서 wrap with builder를 선택해주면 다음과 같이 변경된다.
+- `Navigator.pop(context);` 현재 페이지 닫기
 ```bash
   return MaterialApp(
     home: Scaffold(
@@ -374,4 +375,74 @@ showDialog(
           );
         }
       ),  
+```
+
+## 12. 자식 위젯이 부모 위젯의 state를 사용할 때
+1. 자식 요소의 파라미터에 부모의 state 값을 담는다.
+  ```bash
+  (MyApp 안의 DialogUI() 쓰던 곳)
+  DialogUI( state : a ) 
+  ```
+
+2. 자식 위젯 정의 부분에서 어떤 파라미터가 들어오는지 설정해준다.
+  ```bash
+  class DialogUI extends StatelessWidget {
+    DialogUI({Key? key, this.state }) : super(key: key);
+    final state; 
+  ```
+  final은 var와 같은 역할을 하지만 수정을 할 수 없다.
+
+3. `Text(state.toString())`등과 같이 잘 전달 받는지 확인한다.
+
+## 13. 자식 위젯이 부모 위젯의 state를 변경할 때 
+1. state 조작하는 함수를 부모 위젯에 미리 만들어둔다.
+  ```bash
+  class _MyAppState extends State<MyApp> {
+    var name = ['김영숙', '홍길동', '피자집'];
+    var total = 3;
+  
+    addOne() {
+      setState(() {
+        total++;  
+      });
+    }
+  ```
+
+2. 자식 위젯에 함수를 전달한다.
+  ```bash
+  (MyApp 안의 DialogUI() 쓰던 곳)
+  DialogUI( addOne : addOne ) 
+  ```
+
+3. 자식 위젯에서 파라미터로 들어오는 함수를 등록한다.
+  ```bash
+  class DialogUI extends StatelessWidget {
+    DialogUI({Key? key, this.addOne }) : super(key: key);
+    final addOne;
+  ```
+
+4. 다음과 같이 함수를 사용하면 된다.
+  ```bash
+  TextButton(
+    child: Text('완료'),
+    onPressed: (){
+      addOne();
+    },
+  ), 
+  ```
+
+#### Input Controll
+유저가 TextField()에 입력한 값을 가져오고 싶다면, `TextEditingController()`를 사용한다.
+```bash
+class DialogUI extends StatelessWidget {
+  DialogUI({Key? key, this.addOne }) : super(key: key);
+  final addOne;
+  var inputData = TextEditingController();
+```
+
+이후, TextField() 안에 controller 파라미터를 이용하여 InputData 값을 받는다.
+```bash
+TextField(
+  controller: inputData,
+), 
 ```
