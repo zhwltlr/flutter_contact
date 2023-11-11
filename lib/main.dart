@@ -22,6 +22,7 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
+  var a = 3;
   var cnt = 1;
   var name = ['김영숙','홍길동','피자집'];
   var like = [0,0,0];
@@ -46,24 +47,9 @@ class _MyAppState extends State<MyApp> {
         bottomNavigationBar: BottomAppBar(),
         // 전구로 wrap with builder 만들면, context를 생성해준다
         floatingActionButton: FloatingActionButton(
-          child: Text(cnt.toString()),
           onPressed: (){
-            print(context.findAncestorWidgetOfExactType<MaterialApp>());
             showDialog(context: context, builder: (context){
-              return Dialog(
-                child: Column(
-                  children: [
-                    Text('Contact'),
-                    // InputChip(label: label),
-                    Row(
-                      children: [
-                        Text('Cancle'),
-                        Text('OK')
-                      ],
-                    )
-                  ],
-                ),
-              );
+              return DialogUI(state : a);
             });
           },
         ),
@@ -87,22 +73,49 @@ class _MyAppState extends State<MyApp> {
 //   }
 // }
 
-class BottomAppBar extends StatelessWidget {
-  const BottomAppBar({super.key});
+// class BottomAppBar extends StatelessWidget {
+//   const BottomAppBar({super.key});
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     return const SizedBox(
+//         height: 50,
+//         child: Row(
+//           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+//           children: [
+//             Icon(Icons.phone),
+//             Icon(Icons.message),
+//             Icon(Icons.contact_page),
+//           ],
+//         ),
+//     );
+//   }
+// }
+
+// 부모 => 자식 state 전송
+// 1, 보내고 2. 등록하고 3. 쓴다.
+
+class DialogUI extends StatelessWidget {
+  DialogUI({Key? key, this.state}) : super(key: key);
+  // final을 쓰면 var과 같은 역할을 하지만 수정을 할 수 없다!!
+  final state;
 
   @override
   Widget build(BuildContext context) {
-    return const SizedBox(
-        height: 50,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+    return Dialog(
+      child: Container(
+        width: 300,
+        height: 300,
+        child: Column(
           children: [
-            Icon(Icons.phone),
-            Icon(Icons.message),
-            Icon(Icons.contact_page),
+            TextField(),
+            TextButton( child: Text(state.toString()), onPressed:(){} ),
+            TextButton(
+                child: Text('취소'),
+                onPressed:(){ Navigator.pop(context); })
           ],
         ),
+      ),
     );
   }
 }
-
