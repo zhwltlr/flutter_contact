@@ -22,17 +22,29 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  var a = 3;
+  var total = 3;
   var cnt = 1;
   var name = ['김영숙','홍길동','피자집'];
   var like = [0,0,0];
+
+  addOne(){
+    setState(() {
+      total++;
+    });
+  }
+
+  addName(newName){
+    setState(() {
+      name.add(newName);
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     // context 는 부모요소가 누군지 알려줌(족보같은 개념!!)
     return Scaffold(
         appBar: AppBar(
-          title: Text('연락처앱'),
+          title: Text(total.toString()),
         ),
         body: ListView.builder(
           itemCount: 3,
@@ -49,7 +61,7 @@ class _MyAppState extends State<MyApp> {
         floatingActionButton: FloatingActionButton(
           onPressed: (){
             showDialog(context: context, builder: (context){
-              return DialogUI(state : a);
+              return DialogUI(addName : addName);
             });
           },
         ),
@@ -96,9 +108,11 @@ class _MyAppState extends State<MyApp> {
 // 1, 보내고 2. 등록하고 3. 쓴다.
 
 class DialogUI extends StatelessWidget {
-  DialogUI({Key? key, this.state}) : super(key: key);
+  DialogUI({Key? key, this.addName}) : super(key: key);
   // final을 쓰면 var과 같은 역할을 하지만 수정을 할 수 없다!!
-  final state;
+  final addName;
+  var inputData = TextEditingController();
+  var inputData2 = '';
 
   @override
   Widget build(BuildContext context) {
@@ -108,8 +122,10 @@ class DialogUI extends StatelessWidget {
         height: 300,
         child: Column(
           children: [
-            TextField(),
-            TextButton( child: Text(state.toString()), onPressed:(){} ),
+            TextField(onChanged: (text){ inputData2 = text; },),
+            TextButton( child: Text('완료'), onPressed:(){
+              addName(inputData2);
+            } ),
             TextButton(
                 child: Text('취소'),
                 onPressed:(){ Navigator.pop(context); })
