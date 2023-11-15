@@ -27,15 +27,16 @@ class _MyAppState extends State<MyApp> {
   var name = ['김영숙','홍길동','피자집'];
   var like = [0,0,0];
 
-  addOne(){
-    setState(() {
-      total++;
-    });
-  }
 
   addName(newName){
     setState(() {
       name.add(newName);
+    });
+  }
+
+  addOne(){
+    setState(() {
+      total++;
     });
   }
 
@@ -47,7 +48,7 @@ class _MyAppState extends State<MyApp> {
           title: Text(total.toString()),
         ),
         body: ListView.builder(
-          itemCount: 3,
+          itemCount: name.length,
           itemBuilder: ( context , i ){
             print(i);
             return ListTile(
