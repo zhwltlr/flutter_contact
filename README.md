@@ -446,3 +446,93 @@ TextField(
   controller: inputData,
 ), 
 ```
+
+
+## 14. state와 setState를 이용하여 연락처 업데이트 해보기
+```bash
+addName(newName){
+    setState(() {
+      name.add(newName);
+    }); 
+} 
+```
+- 이름을 등록할 수 있는 함수를 만든다. (setState를 포함해야 한다.)
+```bash
+DialogUI(addOne : addOne, addName : addName)  
+```
+- 자식 위젯에게 전달해준다.
+
+```bash
+class DialogUI extends StatelessWidget {
+  DialogUI({Key? key, this.addOne, this.addName}) : super(key: key);
+  final addOne;
+  final addName; 
+  
+TextButton(
+  child: Text('완료'),
+  onPressed: (){
+    addName();
+    addOne(inputData);
+  },
+), 
+```
+- 자식요소에서 받은 뒤 TextField의 입력값을 newName 파라미터로 넣어준다.
+### 응용사항
+- 완료버튼 눌러도 Dialog 닫히게 만들려면?
+- 빈칸으로 완료버튼 누르면 추가안되게?
+- 이름옆에 삭제버튼과 기능?
+- 이름들 가나다순 정렬버튼? (sort함수 사용법을 찾아봅시다)
+- 전화번호 데이터도 3개 마련해놓고 전화번호도 보여주고 싶으면?
+
+## 15. 개발을 위한 가상의 Android 띄우기
+(우분투 버전 설치 튜토리얼 확인 필요)
+
+---
+
+## 16. request permission from user
+1. 유저에게 요청할 수 있는 외부 패키지 파일을 `pubspec.yaml` 파일에 기록하고 `pub get` 실행한다.
+  ```bash
+  dependencies:
+    flutter:
+      sdk: flutter
+    permission_handler: ^8.3.0 
+  ```
+2.`main.dart`에서 import 해준다.
+  ```bash
+  import 'package:permission_handler/permission_handler.dart';
+  ```
+
+3. android/gradle.properties에 다음 사항을 확인한다.
+  ```bash
+  android.useAndroidX=true
+  android.enableJetifier=true 
+  ```
+
+4. `android/app/src/main/AndroidManifest.xml` 파일에 다음 내용을 넣어 유저의 연락처에 read, write 권한을 요청한다.
+  ```bash
+  <manifest>
+      <uses-permission android:name="android.permission.READ_CONTACTS"/>
+      <uses-permission android:name="android.permission.WRITE_CONTACTS"/>
+     <application> 
+  ```
+5. `main.dart`에 권한 요청을 하는 함수를 작성한다.
+  ```bash
+  getPermission() async {
+      var status = await Permission.contacts.status;
+      if (status.isGranted) {
+        print('allow');
+      } else if (status.isDenied) {
+        print('deny');
+        Permission.contacts.request();
+      }
+  }  
+  ```
+6. 권한 요청을 위한 Button을 위치한 후, `onPressed(){}`에서 호출한다.
+  ```bash
+  AppBar(
+    title : Text('앱제목'),
+    actions : [
+      IconButton(onPressed: (){ getPermission(); }, icon : Icon(Icons.contacts))
+    ]
+  )
+  ```
