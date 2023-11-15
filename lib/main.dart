@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 // app 실행 부분 메인페이지 넣기
 void main() {
@@ -22,6 +23,24 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
+
+  getPermission() async {
+    var status = await Permission.contacts.status;
+    if (status.isGranted) {
+      print('허락됨');
+    } else if (status.isDenied) {
+      print('거절됨');
+      Permission.contacts.request();
+      openAppSettings();
+    }
+  }
+
+  @override
+  void initState(){
+    super.initState();
+    getPermission();  // 접속하자마자 로드되는 것(요즘은 처음부터 동의, 거절을 구하는건 비추)
+  }
+
   var total = 3;
   var cnt = 1;
   var name = ['김영숙','홍길동','피자집'];
@@ -45,7 +64,11 @@ class _MyAppState extends State<MyApp> {
     // context 는 부모요소가 누군지 알려줌(족보같은 개념!!)
     return Scaffold(
         appBar: AppBar(
-          title: Text(total.toString()),
+          title: Text(total.toString()), actions: [
+            IconButton(onPressed: (){
+              getPermission();
+            }, icon: Icon(Icons.contacts))
+        ],
         ),
         body: ListView.builder(
           itemCount: name.length,
