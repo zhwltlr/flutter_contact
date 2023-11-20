@@ -485,7 +485,10 @@ TextButton(
 - 전화번호 데이터도 3개 마련해놓고 전화번호도 보여주고 싶으면?
 
 ## 15. 개발을 위한 가상의 Android 띄우기
-(우분투 버전 설치 튜토리얼 확인 필요)
+우분투 버전
+- file / settings 에서 `Android SDK` 검색
+- `(SDK Platforms`와 `SDK Tools` 확인해준다.)[https://d-life93.tistory.com/486]
+- refresh 하고 적절한 device 선택해서 실행하면 나온다.
 
 ---
 
@@ -536,3 +539,54 @@ TextButton(
     ]
   )
   ```
+
+## 17. contact_service package
+`pubspec.yaml`에 `contacts_service` 설치
+```bash
+dependencies:
+flutter:
+sdk: flutter
+permission_handler: ^8.2.6
+contacts_service: ^0.6.3 
+```
+`main.dart`에 `import 'package:contacts_service/contacts_service.dart';` 선언해준다.
+
+list 자료로 모든 연락처를 가져오기 위해서 다음과 같이 작성해준다.
+```bash
+var contacts = await ContactsService.getContacts(); 
+print(contacts[0].familyName); // 이름
+print(contacts[0].givenName); // 성
+print(contacts[0].displayName); // 저장된 이름 전부
+```
+
+새로운 연락처를 추가하는 방식도 가능하다.
+```bash
+var newContact = new Contact();
+newContact.givenName = 'zhwltlr';
+await ContactsService.addContact(newContact); 
+```
+
+이렇게 입력된 연락처를 실제로 앱에서 보여줄 때는 타입에 신경써야 한다.
+- 타입캐스팅 / Union Type / 변수 빈 값 선어
+```bash
+ var name = [];
+ # or
+ List<Contact> name = [];
+```
+연락처를 보여줄 List에 대한 타입을 잘 지정한 후, 다음과 같이 setState로 이름을 변경해준다.
+```bash
+  getPermission() async {
+    var status = await Permission.contacts.status;
+    if (status.isGranted) {
+      print('allow');
+      var contacts = await ContactsService.getContacts();
+      setState(() {
+        name = contacts;
+      });
+    } else if (status.isDenied) {
+      print('denied');
+      Permission.contacts.request();
+      openAppSettings();
+    }
+  }
+```
