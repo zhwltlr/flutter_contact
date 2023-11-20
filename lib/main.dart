@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:contacts_service/contacts_service.dart';
 
 // app 실행 부분 메인페이지 넣기
 void main() {
@@ -28,6 +29,24 @@ class _MyAppState extends State<MyApp> {
     var status = await Permission.contacts.status;
     if (status.isGranted) {
       print('허락됨');
+      var contacts = await ContactsService.getContacts();
+      print(contacts[0].familyName);
+      print(contacts[0].givenName);
+      print(contacts[0].displayName);
+
+    //   연락처 추가 new Contact();를 Contact();로 나타낼 수 있다.
+    //   var newPreson = Contact();
+    //   newPreson.givenName = '민수';
+    //   newPreson.familyName = '김';
+    //   await ContactsService.addContact(newPreson);
+
+
+    //   dart는 타입을 잘 지켜야한다.
+    //   타입 변경은 항상 에러를 잡아준다.
+      setState(() {
+        name = contacts;
+      });
+
     } else if (status.isDenied) {
       print('거절됨');
       Permission.contacts.request();
@@ -43,9 +62,10 @@ class _MyAppState extends State<MyApp> {
 
   var total = 3;
   var cnt = 1;
-  var name = ['김영숙','홍길동','피자집'];
+  // List<dynamic> type
+  var name = [];
+  // List<Contact> name = [];
   var like = [0,0,0];
-
 
   addName(newName){
     setState(() {
@@ -76,7 +96,7 @@ class _MyAppState extends State<MyApp> {
             print(i);
             return ListTile(
               leading: Image.asset('profile.png'),
-              title: Text(name[i]),
+              title: Text(name[i].givenName),
             );
           },
         ),
