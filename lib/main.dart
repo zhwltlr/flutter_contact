@@ -60,10 +60,11 @@ class _MyAppState extends State<MyApp> {
     getPermission();  // 접속하자마자 로드되는 것(요즘은 처음부터 동의, 거절을 구하는건 비추)
   }
 
-  var total = 3;
-  var cnt = 1;
+  // 1. type 지정 잘 해주기, 등호있으면 자동 지정
+  int total = 3;
+  int cnt = 1;
   // List<dynamic> type
-  var name = [];
+  List<Contact> name = [];
   // List<Contact> name = [];
   var like = [0,0,0];
 
@@ -96,7 +97,7 @@ class _MyAppState extends State<MyApp> {
             print(i);
             return ListTile(
               leading: Image.asset('profile.png'),
-              title: Text(name[i].givenName),
+              title: Text(name[i].givenName ?? '??는 왼쪽이 null이면 오른쪽'), // 2. null check (The argument type 'String?' can't be assigned to the parameter type 'String')
             );
           },
         ),
