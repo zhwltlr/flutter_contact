@@ -590,3 +590,128 @@ await ContactsService.addContact(newContact);
     }
   }
 ```
+
+## 18. null check & android build
+app 발행 후 에러를 방지하려면 타입지정 및 null check를 잘 해주어야 한다.
+- type 지정
+  ```bash
+  int total = 3;
+  String person = 'zhwltlr';
+  List<String> name = ['name1', 'name2'];
+  List<int> like = [0, 0, 0];
+  ```
+
+- null check
+```bash
+# no
+Text(name[i].displayName)
+# yes
+Text(name[i].displayName ?? "no name")
+```
+
+#### 앱 build 하기
+- .aab or .apk 파일로 발행해야 한다.
+- keytool을 이용하여 앱의 고유한 key를 생성해주야 한다.
+  ```bash
+  PATH\keytool -genkey -v -keystore ~/upload-keystore.jks -keyalg RSA -keysize 2048 -validity 10000 -alias upload
+  ```
+- `android`폴더 안에 `key.properties`파일을 만들어서 key를 저장해준다.
+  ```bash
+  storePassword=password
+  keyPassword=password
+  keyAlias=upload
+  storeFile=path/upload-keystore.jks
+  ```
+- `android/app/build.gradle`파일 안에 다음의 내용을 추가해준다.
+```bash
+def keystoreProperties = new Properties()
+def keystorePropertiesFile = rootProject.file('key.properties')
+if (keystorePropertiesFile.exists()) {
+    keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+}
+```
+- 같은 파일 안에 `signinConfigs`와 `buildTypes`를 넣어준다.
+  ```bash
+  signingConfigs {
+      release {
+          keyAlias keystoreProperties['keyAlias']
+          keyPassword keystoreProperties['keyPassword']
+          storeFile keystoreProperties['storeFile'] ? file(keystoreProperties['storeFile']) : null
+          storePassword keystoreProperties['storePassword']
+      }
+  } 
+  ```
+- 안드로이드 스튜디오에서 `Build - Flutter - Build App Bundle`로 발행한 후 발생된 경로를 구글 플레이 스토어에 등록!!
+
+## 19. iOS 앱으로 발행하기
+- Apple Developer Program에 개발자로 가입
+- Xcode에서 `Bundle Identifier`를 확인한다. (앱을 구분하는 고유 ID)
+- com.회사명.프로젝트명으로 기입되어 있는 것은 변경도 가능하다.
+  - 안드로이드 스튜디오 상단 View - Tool Windows - Terminal 누르고 
+  - dart pub global activate rename 입력 
+  - dart pub global run rename --bundleId com.회사명작명.앱이름작명
+
+
+## 20. TextField Style
+TextField에 아이콘을 넣고 싶을때
+```bash
+TextField(
+  decoration: InputDecoration(
+    icon: Icon(Icons.star), # prefixIcon:, suffixIcon:도 가능
+  ),
+), 
+```
+
+border를 주고 싶을 땐 `enabledBorder`
+```bash
+TextField(
+  decoration: InputDecoration(
+    enabledBorder: OutlineInputBorder(
+      borderSide: BorderSide(
+        color: Colors.green,
+        width: 1.0,
+      ),
+    ),
+
+  ),
+), 
+  
+# border 하단에만 주기
+TextField(
+  decoration: InputDecoration(
+    enabledBorder: UnderlineInputBorder(),
+  ),
+), 
+  
+# border radius
+TextField(
+  decoration: InputDecoration(
+    enabledBorder: OutlineInputBorder(
+      borderRadius: BorderRadius.circular(30),
+    ),
+
+  ),
+), 
+  
+# border 없이 bg 채우기
+TextField(
+  decoration: InputDecoration(
+    filled: true,
+    fillColor: Colors.blue.shade100,
+    enabledBorder: OutlineInputBorder(
+      borderSide: BorderSide.none,
+    )
+
+  ),
+), 
+  
+# placeholder 역할
+TextField(
+  decoration: InputDecoration(
+    hintText: 'hint',
+    helperText: 'helper',
+    labelText: 'label',
+    counterText: 'counter'
+  ),
+), 
+```
